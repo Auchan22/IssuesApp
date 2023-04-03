@@ -1,4 +1,15 @@
+import { useQuery } from '@tanstack/react-query';
+
+const getLabels = async (): Promise<any> => {
+  const res = await fetch('https://api.github.com/repos/facebook/react/labels');
+  const data = await res.json();
+
+  return data;
+};
+
 export const LabelPicker = () => {
+  const labelsQuery = useQuery(['labels'], getLabels);
+
   return (
     <div>
       <span
