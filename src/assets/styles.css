@@ -37,8 +37,8 @@ h3 {
 }
 
 body {
-  background-color: black;
-  color: white;
+  background-color: #041124;
+  color: #8cabd9;
 }
 @media screen and (prefers-color-scheme: light) {
   body {
