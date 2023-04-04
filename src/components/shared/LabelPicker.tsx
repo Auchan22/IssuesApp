@@ -1,26 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { githubApi } from '../../api/githubApi';
-
-interface Label {
-  color: string;
-  default: boolean;
-  description?: string;
-  id: number;
-  name: string;
-  node_id: string;
-  url: string;
-}
-
-const getLabels = async (): Promise<Label[]> => {
-  const { data } = await githubApi.get<Label[]>('/labels');
-
-  return data;
-};
+import { useLabel } from '../../hooks/useLabel';
 
 export const LabelPicker = () => {
-  const labelsQuery = useQuery(['labels'], getLabels, {
-    refetchOnWindowFocus: false,
-  });
+  const { labelsQuery } = useLabel();
+
+  if (labelsQuery.isLoading) return <h1>Loading</h1>;
 
   return (
     <div>
