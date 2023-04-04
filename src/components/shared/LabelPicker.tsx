@@ -1,9 +1,10 @@
 import { useLabel } from '../../hooks/useLabel';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export const LabelPicker = () => {
   const { labelsQuery } = useLabel();
 
-  if (labelsQuery.isLoading) return <h1>Loading</h1>;
+  if (labelsQuery.isLoading) return <LoadingSpinner />;
 
   return (
     <div>
