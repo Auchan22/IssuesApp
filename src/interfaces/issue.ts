@@ -84,3 +84,8 @@ export interface User {
   type: string;
   site_admin: boolean;
 }
+
+export enum State {
+  OPEN = 'open',
+  CLOSED = 'closed',
+}
