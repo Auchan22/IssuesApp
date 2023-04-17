@@ -13,7 +13,7 @@ const comment3 =
 export const IssueView = () => {
   const { id = '0' } = useParams();
 
-  const { issueQuery } = useIssue(Number(id));
+  const { issueQuery, commentsQuery } = useIssue(Number(id));
 
   if (issueQuery.isLoading) return <LoadingSpinner />;
 
@@ -24,9 +24,11 @@ export const IssueView = () => {
       <div className='col-12 mb-3'>
         <Link to='./issues/list'>Go Back</Link>
       </div>
-
       <IssueComment issue={issueQuery.data!} />
-
+      {commentsQuery.isLoading && <LoadingSpinner />}
+      {commentsQuery.data?.map((issue) => (
+        <IssueComment key={issue.id} issue={issue} />
+      ))}
       {/* Comentario de otros
       <IssueComment body={comment2} />
       <IssueComment body={comment3} /> */}
