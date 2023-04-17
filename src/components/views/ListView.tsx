@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { IssueList } from '../shared/IssueList';
 import { LabelPicker } from '../shared/LabelPicker';
 import { useIssues } from '../../hooks';
+import { LoadingSpinner } from '../shared/LoadingSpinner';
 
 export const ListView = () => {
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
@@ -16,7 +17,11 @@ export const ListView = () => {
   return (
     <div className='row mt-5'>
       <div className='col-8'>
-        <IssueList />
+        {issuesQuery.isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <IssueList issues={issuesQuery.data || []} />
+        )}
       </div>
 
       <div className='col-4'>
