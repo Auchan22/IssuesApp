@@ -12,7 +12,8 @@ export const IssueItem: React.FC<Props> = ({ data }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const handleMouseEnter = () => {
+  // Prefetch al hacer hover
+  const prefetchData = () => {
     queryClient.prefetchQuery(['issue', data.number], () =>
       getIssueInfo(data.number),
     );
@@ -21,11 +22,19 @@ export const IssueItem: React.FC<Props> = ({ data }) => {
     );
   };
 
+  //Queremos que la información ya este en caché
+  const presetData = () => {
+    queryClient.setQueryData(['issue', data.number], data, {
+      updatedAt: new Date().getTime() + 100000,
+    });
+  };
+
   return (
     <div
       className='card mb-2 issue'
       onClick={() => navigate(`/issues/issue/${data.number}`)}
-      onMouseEnter={handleMouseEnter}
+      // onMouseEnter={prefetchData}
+      onMouseEnter={presetData}
     >
       <div className='card-body d-flex align-items-center'>
         {data.state === State.OPEN ? (
