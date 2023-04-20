@@ -3,6 +3,7 @@ import { Issue, State } from '../../interfaces';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { getIssueComments, getIssueInfo } from '../../hooks/useIssue';
+import { timeSince } from '../../helpers/time-since';
 
 interface Props {
   data: Issue;
@@ -46,9 +47,20 @@ export const IssueItem: React.FC<Props> = ({ data }) => {
         <div className='d-flex flex-column flex-fill px-2'>
           <span>{data.title}</span>
           <span className='issue-subinfo'>
-            #{data.number} opened 2 days ago by{' '}
+            #{data.number} opened {timeSince(data.created_at)} ago by{' '}
             <span className='fw-bold'>{data.user.login}</span>
           </span>
+          <div>
+            {data.labels.map((l) => (
+              <span
+                key={l.id}
+                className='badge rounded-pill m-1 label-picker'
+                style={{ backgroundColor: `#${l.color}`, color: '#000' }}
+              >
+                {l.name}
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className='d-flex align-items-center'>
