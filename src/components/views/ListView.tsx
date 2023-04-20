@@ -10,7 +10,7 @@ export const ListView = () => {
 
   const [state, setState] = useState<State>();
 
-  const { issuesQuery } = useIssues();
+  const { issuesQuery } = useIssues({ state, labels: selectedLabels });
 
   const onLabelChange = (l: string) => {
     selectedLabels.includes(l)
