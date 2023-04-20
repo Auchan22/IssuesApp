@@ -3,9 +3,13 @@ import { IssueList } from '../shared/IssueList';
 import { LabelPicker } from '../shared/LabelPicker';
 import { useIssues } from '../../hooks';
 import { LoadingSpinner } from '../shared/LoadingSpinner';
+import { State } from '../../interfaces';
 
 export const ListView = () => {
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+
+  const [state, setState] = useState<State>();
+
   const { issuesQuery } = useIssues();
 
   const onLabelChange = (l: string) => {
@@ -20,7 +24,11 @@ export const ListView = () => {
         {issuesQuery.isLoading ? (
           <LoadingSpinner />
         ) : (
-          <IssueList issues={issuesQuery.data || []} />
+          <IssueList
+            issues={issuesQuery.data || []}
+            state={state}
+            onStateChange={(newState) => setState(newState)}
+          />
         )}
       </div>
 
