@@ -2,13 +2,19 @@ import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
 import { githubApi } from '../api/githubApi';
 import { Issue, State } from '../interfaces';
 import { sleep } from '../helpers/sleep';
+import { useState } from 'react';
 
 interface Props {
   state?: State;
   labels: string[];
+  page?: number;
 }
 
-const getIssues = async (labels: string[], state?: State): Promise<Issue[]> => {
+const getIssues = async ({
+  labels,
+  state,
+  page = 1,
+}: Props): Promise<Issue[]> => {
   // console.log(args);
 
   await sleep(2);
@@ -22,7 +28,7 @@ const getIssues = async (labels: string[], state?: State): Promise<Issue[]> => {
     params.append('labels', labelString);
   }
 
-  params.append('page', '1');
+  params.append('page', page?.toString());
   params.append('per_page', '5');
 
   const { data } = await githubApi.get<Issue[]>('/issues', { params });
@@ -31,11 +37,22 @@ const getIssues = async (labels: string[], state?: State): Promise<Issue[]> => {
 };
 
 export const useIssues = ({ state, labels }: Props) => {
+  const [page, setPage] = useState<number>(1);
+
+  const nextPage = () => {
+    if (issuesQuery.data?.length === 0) return;
+    setPage((p) => p + 1);
+  };
+
+  const prevPage = () => {
+    if (page > 1) setPage((p) => p - 1);
+  };
+
   // Por medio de los {}, podemos definir keys, pero sin importar el orden, ya que va a saber a cual elemento apunta
   const issuesQuery = useQuery({
-    queryKey: ['issues', { labels, state }],
-    queryFn: () => getIssues(labels, state),
+    queryKey: ['issues', { labels, state, page }],
+    queryFn: () => getIssues({ labels, state, page }),
   });
 
-  return { issuesQuery };
+  return { issuesQuery, page, nextPage, prevPage };
 };
