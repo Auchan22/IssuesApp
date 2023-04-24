@@ -8,6 +8,7 @@ interface Props {
   state?: State;
   labels: string[];
   page?: number;
+  perPage?: number;
 }
 
 const getIssues = async ({
