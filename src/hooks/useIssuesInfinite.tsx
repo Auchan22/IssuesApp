@@ -47,6 +47,11 @@ export const useIssuesInfinite = ({ state, labels }: Props) => {
   const issuesQuery = useInfiniteQuery({
     queryKey: ['issues', 'infinite', { state, labels, page: 1 }],
     queryFn: (data) => getIssues(data),
+    getNextPageParam: (lastpage, pages) => {
+      if (lastpage.length === 0) return;
+
+      return pages.length + 1;
+    },
     // getNextPageParam
   });
 

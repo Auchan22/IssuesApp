@@ -34,15 +34,15 @@ export const ListViewInfinite = () => {
           />
         )}
 
-        {/* <div className='d-flex mt-2 justify-content-between alignt-items-center'>
+        <div className='d-flex mt-2 justify-content-between alignt-items-center'>
           <button
             className='btn btn-outline-primary'
-            disabled={issuesQuery.isFetching}
-            onClick={loadMore}
+            disabled={!issuesQuery.hasNextPage}
+            onClick={() => issuesQuery.fetchNextPage()}
           >
             Ver más...
           </button>
-        </div> */}
+        </div>
       </div>
 
       <div className='col-4'>
