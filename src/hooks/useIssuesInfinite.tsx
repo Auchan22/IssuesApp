@@ -9,12 +9,20 @@ interface Props {
   page?: number;
 }
 
+interface QueryProps {
+  pageParam?: number;
+  queryKey: (string | Props)[];
+}
+
 const getIssues = async ({
-  labels,
-  state,
-  page = 1,
-}: Props): Promise<Issue[]> => {
+  pageParam = 1,
+  queryKey,
+}: QueryProps): Promise<Issue[]> => {
   // console.log(args);
+
+  const [, , args] = queryKey;
+
+  const { state, labels } = args as Props;
 
   await sleep(2);
 
@@ -27,7 +35,7 @@ const getIssues = async ({
     params.append('labels', labelString);
   }
 
-  params.append('page', page?.toString());
+  params.append('page', pageParam?.toString());
   params.append('per_page', '5');
 
   const { data } = await githubApi.get<Issue[]>('/issues', { params });

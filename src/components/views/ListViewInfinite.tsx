@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IssueList } from '../shared/IssueList';
 import { LabelPicker } from '../shared/LabelPicker';
-import { useIssues } from '../../hooks';
+import { useIssues, useIssuesInfinite } from '../../hooks';
 import { LoadingSpinner } from '../shared/LoadingSpinner';
 import { State } from '../../interfaces';
 
@@ -10,7 +10,7 @@ export const ListViewInfinite = () => {
 
   const [state, setState] = useState<State>();
 
-  const { issuesQuery } = useIssues({
+  const { issuesQuery } = useIssuesInfinite({
     state,
     labels: selectedLabels,
   });
@@ -28,13 +28,13 @@ export const ListViewInfinite = () => {
           <LoadingSpinner />
         ) : (
           <IssueList
-            issues={issuesQuery.data || []}
+            issues={issuesQuery.data?.pages.flat() || []}
             state={state}
             onStateChange={(newState) => setState(newState)}
           />
         )}
 
-        <div className='d-flex mt-2 justify-content-between alignt-items-center'>
+        {/* <div className='d-flex mt-2 justify-content-between alignt-items-center'>
           <button
             className='btn btn-outline-primary'
             disabled={issuesQuery.isFetching}
@@ -42,7 +42,7 @@ export const ListViewInfinite = () => {
           >
             Ver más...
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className='col-4'>
